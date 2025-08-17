@@ -6,10 +6,10 @@
     <title>CRAZY CHAOS PARTY</title>
 
     <!-- OGP Tags for Social Sharing -->
-    <meta property="og:title" content="CRAZY CHAOS PARTY">
+    <meta property="og:title" content="CRAZY CHAOS PARTY 世界一カオスなパーティ！ #cluster">
     <meta property="og:description" content="宇宙よ、刮目せよ。狂気のマッドバーチャリスト「カゲキン」が仕掛ける、究極のカオスパーティが今、始まる。">
-    <meta property="og:image" content="https://i.imgur.com/s5l3gHx.png">
-    <meta property="og:url" content="https://cluster.mu/e/5d360712-70ab-43b1-a0c0-badf7241ba9d">
+    <meta property="og:image" content="https://ccparty.kagekin.com/ogp.png">
+    <meta property="og:url" content="https://ccparty.kagekin.com/">
     <meta name="twitter:card" content="summary_large_image">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -154,7 +154,7 @@
     <div id="event-info-container" class="fixed top-4 left-4 z-50">
         <div id="event-info-box" class="window p-3 text-white text-sm">
             <h2 class="text-base text-cyan-300" style="font-family: 'Press Start 2P', cursive;">EVENT INFO</h2>
-            <p class="mt-2">開催日: 2025/09/06 18:00 JST</p>
+            <p class="mt-2">開催日: 2025/09/06 18:00 ~ 20:00 JST</p>
             <div id="countdown" class="mt-1 text-lg">
                 <span>--d</span> <span>--h</span> <span>--m</span> <span>--s</span>
             </div>
@@ -166,7 +166,7 @@
         <a href="https://cluster.mu/e/5d360712-70ab-43b1-a0c0-badf7241ba9d" target="_blank" class="relative block">
             <div id="tractor-beam"></div>
             <div id="cow-emoji">🐮</div>
-            <img src="https://i.imgur.com/Wzx8v7Q.png" alt="UFO" class="w-52 relative z-10">
+            <img src="https://ccparty.kagekin.com/img/ufo.png" alt="UFO" class="w-52 relative z-10">
             <div class="speech-bubble">イベントページはこちら！</div>
         </a>
     </div>
@@ -174,7 +174,7 @@
     <div class="w-full max-w-lg mx-auto flex flex-col gap-4 p-2">
         <!-- Event Logo -->
         <div id="event-logo-container" class="text-center">
-            <img src="https://i.imgur.com/HkwaQ2x.png" alt="CRAZY CHAOS PARTY Logo" class="mx-auto max-w-sm w-full">
+            <img src="https://ccparty.kagekin.com/img/logo.png" alt="CRAZY CHAOS PARTY Logo" class="mx-auto max-w-sm w-full">
         </div>
 
         <!-- Main Chat UI -->
@@ -190,7 +190,7 @@
         <!-- Poster Section -->
         <div class="poster flex-shrink-0">
             <h2 class="text-2xl mb-4 text-center">マジヤバ～イ！ 限界ブチ上げ領域！</h2>
-            <img src="https://i.imgur.com/s5l3gHx.png" alt="Poster Image" class="w-full mb-4 border-4 border-cyan-400">
+            <img src="https://ccparty.kagekin.com/img/samune.png" alt="Poster Image" class="w-full mb-4 border-4 border-cyan-400">
             <p class="mb-4">YO! ユーたちわかってんのか？カオスといえばパーティ！ パーティといえばカオスだ！BIGなArtistとCrazyなPoisonPartyPeopleを集めて最高のパーティをブチあげるのさ！脳みそ沸騰するまで踊り続けろ！</p>
             <h3 class="text-xl mt-6 mb-2">🔥パーティアイテム & ソング大募集！🔥</h3>
             <p>今回のパーティではみんなからパリピアイテムとパーティソングを募集して、全部ワールドにブチ込んで史上最強のカオス空間を作り上げるぜ〜！！ <strong>8/24まで！</strong></p>
@@ -465,7 +465,7 @@
                     if (playbackId !== localPlaybackId) return;
                     const finalContainer = document.createElement('div');
                     finalContainer.className = 'text-center mt-4 p-4';
-                    finalContainer.innerHTML = `<img src="https://i.imgur.com/HkwaQ2x.png" alt="CRAZY CHAOS PARTY Logo" class="mx-auto max-w-sm">`;
+                    finalContainer.innerHTML = `<img src="https://ccparty.kagekin.com/img/logo.png" alt="CRAZY CHAOS PARTY Logo" class="mx-auto max-w-sm">`;
                     chatArea.appendChild(finalContainer);
                     gsap.from(finalContainer, { opacity: 0, scale: 0.8, rotation: -10, duration: 0.7, ease: 'elastic.out(1, 0.5)' });
                     chatArea.scrollTop = chatArea.scrollHeight;
