@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRAZY CHAOS PARTY</title>
+
+    <!-- OGP Tags for Social Sharing -->
+    <meta property="og:title" content="CRAZY CHAOS PARTY">
+    <meta property="og:description" content="宇宙よ、刮目せよ。狂気のマッドバーチャリスト「カゲキン」が仕掛ける、究極のカオスパーティが今、始まる。">
+    <meta property="og:image" content="https://i.imgur.com/s5l3gHx.png">
+    <meta property="og:url" content="https://cluster.mu/e/5d360712-70ab-43b1-a0c0-badf7241ba9d">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <!-- GSAP for animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        body {
+            font-family: 'VT323', monospace;
+            overflow-x: hidden; /* Allow vertical scroll, prevent horizontal */
+            background-color: #000;
+        }
+        .background-grid {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(to right, rgba(0, 255, 255, 0.2) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 255, 255, 0.2) 1px, transparent 1px);
+            background-size: 40px 40px; animation: moveGrid 10s linear infinite;
+        }
+        @keyframes moveGrid { from { background-position: 0 0; } to { background-position: 40px 80px; } }
+        .window {
+            border: 2px solid #00ffff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5), inset 0 0 10px rgba(0, 255, 255, 0.3);
+            background: rgba(10, 25, 47, 0.8); backdrop-filter: blur(8px);
+        }
+        .title-bar {
+            background: linear-gradient(90deg, #000080, #0000ff, #8a2be2, #ff00ff);
+            padding: 8px; display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 2px solid #00ffff; cursor: grab;
+        }
+        .title-bar:active { cursor: grabbing; }
+        .title-bar-buttons span {
+            display: inline-block; width: 20px; height: 20px; background: #c0c0c0;
+            border: 2px solid; border-color: #fff #808080 #808080 #fff;
+            text-align: center; font-family: 'Times New Roman', serif; font-weight: bold;
+            line-height: 16px; margin-left: 4px;
+        }
+        .glossy-button {
+            font-family: 'Press Start 2P', cursive;
+            background: linear-gradient(to bottom, #00ffff, #00aaff);
+            border: 2px solid #00ffff; color: #000080; text-shadow: 1px 1px 0px #fff;
+            box-shadow: 0 0 10px #00ffff, inset 0 1px 1px rgba(255,255,255,0.5);
+            transition: all 0.2s ease;
+        }
+        .glossy-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #ff00ff, inset 0 1px 1px rgba(255,255,255,0.8);
+            color: #000;
+        }
+        .scanlines::before {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2; background-size: 100% 4px, 6px 100%; pointer-events: none;
+            animation: scan 5s linear infinite;
+        }
+        @keyframes scan { from { transform: translateY(0); } to { transform: translateY(20px); } }
+        .explosion-emoji, .note-emoji { position: absolute; font-size: 24px; user-select: none; pointer-events: none; }
+        .poster {
+            background: #fff; color: #000; padding: 1.5rem;
+            border: 4px dashed #ff00ff; transform: rotate(-2deg);
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
+        }
+        .poster h2 { font-family: 'Press Start 2P', cursive; color: #ff00ff; }
+        .poster h3 { font-family: 'Press Start 2P', cursive; color: #0000ff; }
+        .rainbow-button {
+            display: inline-block; padding: 10px 20px; font-family: 'Press Start 2P', cursive;
+            color: white; border: 2px solid #fff; text-shadow: 2px 2px 4px #000;
+            background: linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
+            background-size: 1800% 1800%; animation: rainbow 18s ease infinite;
+            transition: transform 0.2s ease;
+        }
+        .rainbow-button:hover { transform: scale(1.1); }
+        @keyframes rainbow { 0%{background-position:0% 82%} 50%{background-position:100% 19%} 100%{background-position:0% 82%} }
+        .speech-bubble {
+            position: absolute;
+            background: rgba(10, 25, 47, 0.9);
+            color: #00ffff;
+            border: 1px solid #00ffff;
+            padding: 10px 15px;
+            border-radius: 8px;
+            top: 10px;
+            right: 80%;
+            white-space: nowrap;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 14px;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+            z-index: 1;
+        }
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            transform: translateY(-50%);
+            border-width: 10px;
+            border-style: solid;
+            border-color: transparent transparent transparent #00ffff;
+        }
+        #music-player {
+            position: fixed;
+            bottom: 1rem;
+            left: 1rem;
+            z-index: 50;
+            text-align: center;
+        }
+        #player-image {
+            width: 200px; /* Increased size */
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        #track-name {
+            background: rgba(0,0,0,0.7); color: #00ffff; padding: 5px 10px; border-radius: 5px;
+            margin-top: 8px; font-family: 'Press Start 2P', cursive; font-size: 12px;
+            text-shadow: 0 0 5px #00ffff; display: none; transition: opacity 0.3s;
+        }
+        #bgm-off-button {
+            position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+            background: #ff0000; color: white; border: 2px solid white;
+            border-radius: 5px; padding: 2px 8px; font-size: 12px;
+            font-family: 'Press Start 2P', cursive; cursor: pointer; display: none;
+        }
+        #tractor-beam {
+            position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+            width: 0; height: 0;
+            border-left: 30px solid transparent; border-right: 30px solid transparent;
+            border-bottom: 70px solid rgba(0, 255, 255, 0.3);
+            filter: blur(3px);
+        }
+        #cow-emoji {
+            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+            font-size: 30px;
+        }
+    </style>
+</head>
+<body class="bg-black flex items-center justify-center min-h-screen p-2">
+    <div class="background-grid"></div>
+    <div class="scanlines fixed inset-0"></div>
+
+    <!-- Event Info -->
+    <div id="event-info-container" class="fixed top-4 left-4 z-50">
+        <div id="event-info-box" class="window p-3 text-white text-sm">
+            <h2 class="text-base text-cyan-300" style="font-family: 'Press Start 2P', cursive;">EVENT INFO</h2>
+            <p class="mt-2">開催日: 2025/09/06 18:00 JST</p>
+            <div id="countdown" class="mt-1 text-lg">
+                <span>--d</span> <span>--h</span> <span>--m</span> <span>--s</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- UFO -->
+    <div id="ufo-container" class="fixed top-8 right-4 z-50">
+        <a href="https://cluster.mu/e/5d360712-70ab-43b1-a0c0-badf7241ba9d" target="_blank" class="relative block">
+            <div id="tractor-beam"></div>
+            <div id="cow-emoji">🐮</div>
+            <img src="https://i.imgur.com/Wzx8v7Q.png" alt="UFO" class="w-52 relative z-10">
+            <div class="speech-bubble">イベントページはこちら！</div>
+        </a>
+    </div>
+
+    <div class="w-full max-w-lg mx-auto flex flex-col gap-4 p-2">
+        <!-- Event Logo -->
+        <div id="event-logo-container" class="text-center">
+            <img src="https://i.imgur.com/HkwaQ2x.png" alt="CRAZY CHAOS PARTY Logo" class="mx-auto max-w-sm w-full">
+        </div>
+
+        <!-- Main Chat UI -->
+        <div id="main-window" class="window rounded-lg shadow-2xl flex flex-col flex-shrink-0 h-[60vh] min-h-[400px]">
+            <header class="title-bar rounded-t-md">
+                <div class="flex items-center"><h1 class="text-white text-sm md:text-base" style="font-family: 'Press Start 2P', cursive; text-shadow: 2px 2px #ff00ff;">CRAZY CHAOS PARTY!</h1></div>
+                <div class="title-bar-buttons"><span>_</span><span>☐</span><span class="bg-red-500">X</span></div>
+            </header>
+            <main id="chat-area" class="flex-1 p-4 overflow-y-auto space-y-4 text-lg text-white"></main>
+            <footer id="choice-area" class="p-4 border-t-2 border-fuchsia-500/50"><div id="choices" class="grid grid-cols-1 gap-3"></div></footer>
+        </div>
+
+        <!-- Poster Section -->
+        <div class="poster flex-shrink-0">
+            <h2 class="text-2xl mb-4 text-center">マジヤバ～イ！ 限界ブチ上げ領域！</h2>
+            <img src="https://i.imgur.com/s5l3gHx.png" alt="Poster Image" class="w-full mb-4 border-4 border-cyan-400">
+            <p class="mb-4">YO! ユーたちわかってんのか？カオスといえばパーティ！ パーティといえばカオスだ！BIGなArtistとCrazyなPoisonPartyPeopleを集めて最高のパーティをブチあげるのさ！脳みそ沸騰するまで踊り続けろ！</p>
+            <h3 class="text-xl mt-6 mb-2">🔥パーティアイテム & ソング大募集！🔥</h3>
+            <p>今回のパーティではみんなからパリピアイテムとパーティソングを募集して、全部ワールドにブチ込んで史上最強のカオス空間を作り上げるぜ〜！！ <strong>8/24まで！</strong></p>
+            <h3 class="text-xl mt-6 mb-2">🎉驚愕のタイムテーブル！！🎉</h3>
+            <ul class="list-disc list-inside space-y-1">
+                <li><strong>18:00</strong> イベント開始！「みんなでパーティ星に集合！」</li>
+                <li><strong>18:10</strong> 「超アゲステージ」へと移動！</li>
+                <li><strong>18:30</strong> 超アゲアゲなパーティ開始！</li>
+                <li><strong>19:00</strong> 豪華ゲストMJが来る！？</li>
+                <li><strong>19:30</strong> MVP（めちゃヴァクアゲパリピ）を決めるぞ！</li>
+                <li><strong>20:00</strong> パーティ終了！「みんなでパーティ星に帰還！」</li>
+            </ul>
+            <h3 class="text-xl mt-6 mb-2">👥 参加スタイル 👥</h3>
+            <p>手ぶらで踊り狂う「一般参加パリピ」も、アイテムや音楽でカオスを創造する「クリエイターパリピ」も大歓迎だ！</p>
+        </div>
+    </div>
+    
+    <!-- Music Player -->
+    <div id="music-player">
+        <button id="bgm-off-button">BGM OFF</button>
+        <img id="player-image" src="https://ccparty.kagekin.com/img/partyplayer.png" alt="Music Player">
+        <div id="track-name"></div>
+    </div>
+
+    <!-- Floating Action Buttons -->
+    <div class="fixed bottom-4 right-2 md:right-4 flex flex-col items-end gap-3 z-50">
+        <div class="flex items-center gap-2">
+            <span class="bg-black/70 text-white text-sm px-2 py-1 rounded">パーティアイテム投稿</span>
+            <a href="https://forms.gle/5LyT66x44P6LMXBv7" target="_blank" class="w-14 h-14 flex-shrink-0 flex items-center justify-center rounded-full bg-green-400/80 backdrop-blur-sm shadow-lg transition-transform hover:scale-110" title="パーティアイテムを投稿！">
+                <span class="text-4xl">🎉</span>
+            </a>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="bg-black/70 text-white text-sm px-2 py-1 rounded">Xでシェア</span>
+            <button onclick="shareOnX()" class="w-14 h-14 flex-shrink-0 flex items-center justify-center rounded-full bg-white/80 backdrop-blur-sm shadow-lg transition-transform hover:scale-110" title="Xでシェア">
+                <svg class="w-7 h-7 text-gray-800" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg>
+            </button>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="bg-black/70 text-white text-sm px-2 py-1 rounded">主催者</span>
+            <button id="open-modal-button" class="w-14 h-14 flex-shrink-0 flex items-center justify-center rounded-full bg-white/80 backdrop-blur-sm shadow-lg transition-transform hover:scale-110" title="カゲキンについて">
+                <img src="https://pbs.twimg.com/profile_images/1905651963158835200/M06q-esr_400x400.jpg" class="w-10 h-10 rounded-full object-cover">
+            </button>
+        </div>
+    </div>
+
+    <!-- Kagekin Profile Modal -->
+    <div id="profile-modal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-[200] hidden">
+        <div id="modal-content" class="window w-11/12 max-w-sm p-1 relative text-gray-800">
+            <div class="title-bar">
+                <h2 class="text-white font-bold">KAGEKIN_PROFILE.EXE</h2>
+                <div class="title-bar-buttons"><span id="close-modal-button">X</span></div>
+            </div>
+            <div class="bg-white p-6 text-center">
+                <img src="https://pbs.twimg.com/profile_images/1905651963158835200/M06q-esr_400x400.jpg" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-fuchsia-400 shadow-lg">
+                <h2 class="text-2xl font-bold">カゲキン</h2>
+                <p class="text-sm text-fuchsia-500 font-semibold">狂気のマッドバーチャリスト猫人間</p>
+                <p class="text-xs mt-1 text-gray-500">@kgkn42</p>
+                <p class="text-sm mt-4 text-left p-4 bg-gray-100 border border-gray-300 rounded">突如として地球に現れた謎のバーチャルカオス猫人間。予測不能な表現と、あらゆる手段で世界にカオスを振りまく実験を行っている。メロンパンのカリカリの部分が好き。</p>
+                <div class="flex gap-4 mt-6">
+                    <a href="https://x.com/kgkn42" target="_blank" class="flex-1 glossy-button py-2 px-4 rounded-lg text-sm">X</a>
+                    <a href="https://www.youtube.com/@kagekinTV" target="_blank" class="flex-1 glossy-button py-2 px-4 rounded-lg text-sm">YouTube</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio id="audio-player" loop></audio>
+
+    <script>
+        const chatArea = document.getElementById('chat-area');
+        const choiceArea = document.getElementById('choice-area');
+        const choicesContainer = document.getElementById('choices');
+        const profileModal = document.getElementById('profile-modal');
+        const modalContent = document.getElementById('modal-content');
+        const openModalButton = document.getElementById('open-modal-button');
+        const closeModalButton = document.getElementById('close-modal-button');
+        const countdownElement = document.getElementById('countdown');
+        const playerImage = document.getElementById('player-image');
+        const trackNameElement = document.getElementById('track-name');
+        const audioPlayer = document.getElementById('audio-player');
+        const bgmOffButton = document.getElementById('bgm-off-button');
+
+        // --- Countdown Timer ---
+        const partyDate = new Date('2025-09-06T18:00:00+09:00').getTime();
+        const countdownInterval = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = partyDate - now;
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                countdownElement.innerHTML = "PARTY TIME!"; return;
+            }
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            countdownElement.innerHTML = `<span>${days}d</span> <span>${hours}h</span> <span>${minutes}m</span> <span>${seconds}s</span>`;
+        }, 1000);
+
+        // --- Music Player Logic ---
+        const playlist = [
+            'https://ccparty.kagekin.com/bgm/CrazyChaosPartyNEVANEVA.mp3',
+            'https://ccparty.kagekin.com/bgm/JIGOHEN.mp3',
+            'https://ccparty.kagekin.com/bgm/Not my SALT (Remix).mp3',
+            'https://ccparty.kagekin.com/bgm/SASANOHARAPISONSONG.mp3',
+            'https://ccparty.kagekin.com/bgm/Shakana.mp3'
+        ];
+        let currentTrackIndex = -1;
+        let noteInterval;
+        let pulseTween;
+
+        function playNextTrack() {
+            currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+            const nextTrackUrl = playlist[currentTrackIndex];
+            
+            audioPlayer.src = nextTrackUrl;
+            audioPlayer.play().catch(error => console.error("Audio playback failed:", error));
+        }
+
+        audioPlayer.onplay = () => {
+            const fileName = decodeURIComponent(audioPlayer.src.split('/').pop());
+            trackNameElement.textContent = `Now Playing: ${fileName}`;
+            trackNameElement.style.display = 'block';
+            bgmOffButton.style.display = 'block';
+
+            // Start animations
+            pulseTween = gsap.to("#player-image", { scale: 1.05, repeat: -1, yoyo: true, duration: 0.3, ease: 'sine.inOut' });
+            noteInterval = setInterval(spawnNote, 300);
+        };
+
+        audioPlayer.onpause = () => {
+            trackNameElement.style.display = 'none';
+            bgmOffButton.style.display = 'none';
+
+            // Stop animations
+            if (pulseTween) pulseTween.kill();
+            gsap.to("#player-image", { scale: 1, duration: 0.2 });
+            clearInterval(noteInterval);
+        };
+
+        playerImage.addEventListener('click', () => {
+            playNextTrack();
+        });
+
+        bgmOffButton.addEventListener('click', () => {
+            audioPlayer.pause();
+        });
+
+        function spawnNote() {
+            const note = document.createElement('div');
+            note.className = 'note-emoji';
+            note.innerText = ['🎵', '🎶', '🎼', '🎸', '🎹'][Math.floor(Math.random() * 5)];
+            document.body.appendChild(note);
+            const playerRect = playerImage.getBoundingClientRect();
+            gsap.fromTo(note,
+                { left: playerRect.left + playerRect.width / 2, top: playerRect.top + playerRect.height / 2, opacity: 1, scale: 0.5 },
+                { y: -150, x: 'random(-80, 80)', opacity: 0, scale: 'random(1, 1.5)', duration: 2.5, ease: 'power1.out', onComplete: () => note.remove() }
+            );
+        }
+        
+        let shakeTween;
+        playerImage.addEventListener('mouseenter', () => {
+            if (shakeTween) shakeTween.kill();
+            shakeTween = gsap.to("#player-image", { x: 'random(-5, 5)', y: 'random(-5, 5)', rotation: 'random(-3, 3)', duration: 0.1, repeat: -1, ease: 'power1.inOut' });
+        });
+        playerImage.addEventListener('mouseleave', () => {
+            if (shakeTween) shakeTween.kill();
+            gsap.to("#player-image", { x: 0, y: 0, rotation: 0, duration: 0.2 });
+        });
+
+
+        // --- Character Definitions ---
+        const characters = {
+            kagekin: { name: 'カゲキン', avatar: 'https://pbs.twimg.com/profile_images/1905651963158835200/M06q-esr_400x400.jpg' },
+            jacob: { name: 'ジェイコブ', avatar: 'https://placehold.co/40x40/00ff00/000000?text=J' },
+            jennifer: { name: 'ジェニファー', avatar: 'https://placehold.co/40x40/ff00ff/000000?text=J' },
+            dj_neon: { name: 'DJ NEON', avatar: 'https://placehold.co/40x40/00ffff/000000?text=DJ' },
+        };
+
+        // --- Narrative Scripts ---
+        const mainScript = [
+            { char: 'kagekin', text: 'YO! 我々はパーティ星人！この退屈な日常に刺激が足りねぇ！' },
+            { char: 'kagekin', text: 'そうだ…我々の故郷、パーティ星を飛び出して、宇宙一ヤバいパーティをブチ上げる時が来たのさ！' },
+            { char: 'jacob', text: 'WOW! パーティ星からの脱出！？それは…クレイジーすぎますゼ！' },
+            { char: 'jennifer', text: 'AMAZING! 私のアンテナがビリビリにシビれてますワ！目的地はどこですの！？' },
+            { char: 'kagekin', text: '目的地は…**「超アゲステージ」**だ！宇宙人の円盤が飛び交う、狂乱のダンスフロアさ！' },
+            { char: 'dj_neon', text: 'HELL YEAH! 脳がとろける銀河のビートで、星々を揺らしてやるぜ！' },
+            {
+                char: 'kagekin',
+                text: 'ユーも、この宇宙規模のバカ騒ぎに参加する覚悟はあるかい？',
+                choices: [ { text: '魂ごとブチ上がる！', next: 'join_chaos' }, { text: 'カオスこそ我が故郷！', next: 'join_chaos' } ]
+            }
+        ];
+        const storyBranches = {
+            join_chaos: [
+                { char: 'kagekin', text: 'フフフ…それでこそ真のパーティ星人だ！' },
+                { char: 'kagekin', text: '下のポスターで詳細を確認し、パーティアイテムを投稿してカオスに貢献しろ！超アゲステージへのワープゲートはこれだ！' },
+                { char: 'kagekin', text: '<a href="https://cluster.mu/e/5d360712-70ab-43b1-a0c0-badf7241ba9d" target="_blank" class="rainbow-button">イベントに飛び込む！</a>' },
+                { char: 'kagekin', text: '刮目して待て！ #CrazyChaosParty', next: 'end_of_story' },
+            ],
+            end_of_story: [ { char: 'system', text: 'TRANSMISSION END...?', next: 'show_final_message' } ],
+            show_final_message: [ { char: 'final_message' } ]
+        };
+        let currentScript = mainScript; let isScriptPlaying = false; let playbackId = 0;
+
+        // --- Core Functions ---
+        function createExplosion(element) {
+            const emojis = ['💥', '🔥', '✨', '💣', '💨', '⚡', '🤯', '🐱', '🧪', '👽', '🚀'];
+            const rect = element.getBoundingClientRect();
+            const originX = rect.left + rect.width / 2; const originY = rect.top + rect.height / 2;
+            for (let i = 0; i < 25; i++) {
+                const emoji = document.createElement('div');
+                emoji.className = 'explosion-emoji';
+                emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                document.body.appendChild(emoji);
+                gsap.set(emoji, { left: originX, top: originY });
+                gsap.to(emoji, { x: (Math.random() - 0.5) * 400, y: (Math.random() - 0.5) * 400, opacity: 0, scale: Math.random() * 1.5 + 0.5, rotation: Math.random() * 720, duration: Math.random() * 1.5 + 0.5, ease: "power3.out", onComplete: () => emoji.remove() });
+            }
+        }
+        function addMessage(char, text, localPlaybackId) {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    if (playbackId !== localPlaybackId) return;
+                    const character = characters[char];
+                    const messageWrapper = document.createElement('div');
+                    messageWrapper.className = 'flex items-start gap-3';
+                    const avatar = document.createElement('img');
+                    avatar.src = character.avatar;
+                    avatar.className = 'w-10 h-10 rounded-full shadow-md object-cover border-2 border-fuchsia-400';
+                    const messageContent = document.createElement('div');
+                    const name = document.createElement('div');
+                    name.className = 'text-sm text-cyan-300 font-bold';
+                    name.textContent = character.name;
+                    const bubble = document.createElement('div');
+                    bubble.className = 'relative mt-1 bg-black/50 border border-cyan-400 p-3 rounded-lg shadow-md max-w-xs break-words';
+                    let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong class="text-fuchsia-400">$1</strong>');
+                    const urlRegex = /(https?:\/\/[^\s]+)/g;
+                    if (!formattedText.includes('<a')) {
+                        formattedText = formattedText.replace(urlRegex, '<a href="$1" target="_blank" class="text-green-400 hover:underline">$1</a>');
+                    }
+                    bubble.innerHTML = formattedText;
+                    if (char === 'kagekin') {
+                        bubble.style.cursor = 'pointer';
+                        bubble.addEventListener('click', () => createExplosion(bubble));
+                    }
+                    messageContent.appendChild(name); messageContent.appendChild(bubble);
+                    messageWrapper.appendChild(avatar); messageWrapper.appendChild(messageContent);
+                    chatArea.appendChild(messageWrapper);
+                    gsap.from(messageWrapper, { opacity: 0, y: 20, duration: 0.5, ease: 'power3.out' });
+                    chatArea.scrollTop = chatArea.scrollHeight;
+                    resolve();
+                }, Math.random() * 1500 + 1500);
+            });
+        }
+        function addSystemMessage(text, localPlaybackId) {
+             return new Promise(resolve => {
+                setTimeout(() => {
+                    if (playbackId !== localPlaybackId) return;
+                    const messageWrapper = document.createElement('div');
+                    messageWrapper.className = 'text-center text-sm text-red-500 py-2 font-bold tracking-widest';
+                    messageWrapper.textContent = text;
+                    chatArea.appendChild(messageWrapper);
+                    gsap.from(messageWrapper, { opacity: 0, scale: 0.5, duration: 0.5, ease: 'back.out' });
+                    chatArea.scrollTop = chatArea.scrollHeight;
+                    resolve();
+                }, 1000);
+             });
+        }
+        function addFinalMessage(localPlaybackId) {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    if (playbackId !== localPlaybackId) return;
+                    const finalContainer = document.createElement('div');
+                    finalContainer.className = 'text-center mt-4 p-4';
+                    finalContainer.innerHTML = `<img src="https://i.imgur.com/HkwaQ2x.png" alt="CRAZY CHAOS PARTY Logo" class="mx-auto max-w-sm">`;
+                    chatArea.appendChild(finalContainer);
+                    gsap.from(finalContainer, { opacity: 0, scale: 0.8, rotation: -10, duration: 0.7, ease: 'elastic.out(1, 0.5)' });
+                    chatArea.scrollTop = chatArea.scrollHeight;
+                    resolve();
+                }, 1000);
+            });
+        }
+        function showChoices(choices) {
+            choicesContainer.innerHTML = '';
+            choiceArea.classList.remove('opacity-0');
+            choices.forEach((choice, index) => {
+                const button = document.createElement('button');
+                button.className = 'glossy-button w-full py-3 px-4 rounded-lg text-sm';
+                button.textContent = choice.text;
+                button.onclick = (event) => handleChoice(choice.next, event);
+                choicesContainer.appendChild(button);
+                gsap.from(button, { opacity: 0, x: -50, duration: 0.5, delay: index * 0.1, ease: 'power3.out' });
+            });
+        }
+        async function handleChoice(nextBranchKey, event) {
+            if (isScriptPlaying) return;
+            gsap.to('#choices', { opacity: 0, duration: 0.3, onComplete: () => { choicesContainer.innerHTML = ''; } });
+            const userChoiceText = event.target.textContent;
+            const userMessageWrapper = document.createElement('div');
+            userMessageWrapper.className = 'flex items-start gap-3 justify-end';
+            const bubble = document.createElement('div');
+            bubble.className = 'relative mt-1 bg-green-500/80 text-white p-3 rounded-lg shadow-md max-w-xs border border-green-300';
+            bubble.textContent = userChoiceText;
+            userMessageWrapper.appendChild(bubble);
+            chatArea.appendChild(userMessageWrapper);
+            gsap.from(userMessageWrapper, { opacity: 0, y: 20, duration: 0.5, ease: 'power3.out' });
+            chatArea.scrollTop = chatArea.scrollHeight;
+            currentScript = storyBranches[nextBranchKey];
+            await playCurrentScript(playbackId);
+        }
+        async function playCurrentScript(localPlaybackId) {
+            if (playbackId !== localPlaybackId) return;
+            isScriptPlaying = true;
+            for (const line of currentScript) {
+                if (playbackId !== localPlaybackId) return;
+                if (line.char === 'system') await addSystemMessage(line.text, localPlaybackId);
+                else if (line.char === 'final_message') await addFinalMessage(localPlaybackId);
+                else await addMessage(line.char, line.text, localPlaybackId);
+                if (playbackId !== localPlaybackId) return;
+                if (line.choices) { isScriptPlaying = false; showChoices(line.choices); return; }
+                if (line.next) { currentScript = storyBranches[line.next]; await playCurrentScript(localPlaybackId); return; }
+            }
+            isScriptPlaying = false;
+        }
+
+        // --- Event Listeners & Init ---
+        openModalButton.addEventListener('click', () => {
+             profileModal.classList.remove('hidden');
+             gsap.fromTo(modalContent, { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'elastic.out(1, 0.75)' });
+        });
+        closeModalButton.addEventListener('click', () => {
+            gsap.to(modalContent, { opacity: 0, scale: 0.7, duration: 0.3, ease: 'power2.in', onComplete: () => profileModal.classList.add('hidden') });
+        });
+        function shareOnX() {
+            const text = encodeURIComponent("狂気のマッドバーチャリスト「カゲキン」が仕掛ける究極のパーティ… #CrazyChaosParty");
+            const url = encodeURIComponent('https://cluster.mu/e/5d360712-70ab-43b1-a0c0-badf7241ba9d');
+            window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
+        }
+        window.onload = () => {
+            gsap.from("#event-logo-container", { opacity: 0, y: -30, duration: 1, ease: 'elastic.out(1, 0.5)', delay: 0.2 });
+            gsap.from("#main-window", { opacity: 0, y: -50, duration: 1, ease: 'power3.out' });
+            gsap.from(".poster", { opacity: 0, y: 50, rotation: 5, duration: 1, delay: 0.5, ease: 'power3.out' });
+            gsap.from("#ufo-container", { opacity: 0, x: 50, duration: 1, delay: 0.2, ease: 'power3.out' });
+            gsap.from("#event-info-container", { opacity: 0, x: -50, duration: 1, delay: 0.2, ease: 'power3.out' });
+            gsap.from(".fixed.bottom-4", { opacity: 0, x: 50, duration: 1, delay: 0.7, ease: 'power3.out' });
+            gsap.to("#ufo-container", { y: -15, x: 20, rotation:-15, repeat: -1, yoyo: true, ease: "sine.inOut", duration: 3 });
+            gsap.to("#cow-emoji", { y: -15, repeat: -1, yoyo: true, ease: "sine.inOut", duration: 1 });
+            gsap.to("#tractor-beam", { opacity: 0.6, repeat: -1, yoyo: true, ease: "sine.inOut", duration: 1 });
+            
+            playbackId++;
+            playCurrentScript(playbackId);
+        };
+    </script>
+</body>
+</html>
