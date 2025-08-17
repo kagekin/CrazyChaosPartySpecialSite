@@ -144,6 +144,30 @@
             position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
             font-size: 30px;
         }
+        .retro-tv {
+            background: #4a4a4a;
+            border-radius: 20px;
+            padding: 20px;
+            border: 4px solid #222;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.7), 5px 5px 15px rgba(0,0,0,0.5);
+            position: relative;
+        }
+        .tv-screen {
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            box-shadow: inset 0 0 10px #000;
+        }
+        .tv-screen iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
     </style>
 </head>
 <body class="bg-black flex items-center justify-center min-h-screen p-2">
@@ -206,6 +230,20 @@
             <h3 class="text-xl mt-6 mb-2">👥 参加スタイル 👥</h3>
             <p>手ぶらで踊り狂う「一般参加パリピ」も、アイテムや音楽でカオスを創造する「クリエイターパリピ」も大歓迎だ！</p>
         </div>
+        
+        <!-- YouTube TV Section -->
+        <div class="retro-tv flex-shrink-0">
+            <h2 class="text-2xl mb-4 text-center text-white" style="font-family: 'Press Start 2P', cursive;">PARTY LIVE STREAM</h2>
+            <div class="tv-screen">
+                <iframe src="https://www.youtube.com/embed/risGXiXByTI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="text-center mt-4">
+                <a href="https://x.com/naoto_4179_" target="_blank" class="inline-block transition-transform hover:scale-110">
+                    <img src="https://ccparty.kagekin.com/img/movtv.png" alt="STUDIOMoV Logo" class="h-16">
+                </a>
+            </div>
+        </div>
+
     </div>
     
     <!-- Music Player -->
