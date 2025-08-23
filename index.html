@@ -36,6 +36,8 @@
             border: 2px solid #00ffff;
             box-shadow: 0 0 20px rgba(0, 255, 255, 0.5), inset 0 0 10px rgba(0, 255, 255, 0.3);
             background: rgba(10, 25, 47, 0.8); backdrop-filter: blur(8px);
+            position: relative; /* Add position for z-index context */
+            z-index: 20; /* Ensure chat window is on top */
         }
         .title-bar {
             background: linear-gradient(90deg, #000080, #0000ff, #8a2be2, #ff00ff);
@@ -73,6 +75,8 @@
             background: #fff; color: #000; padding: 1.5rem;
             border: 4px dashed #ff00ff; transform: rotate(-2deg);
             box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
+            position: relative; /* Add position for z-index context */
+            z-index: 10; /* Ensure poster is behind chat window */
         }
         .poster h2 { font-family: 'Press Start 2P', cursive; color: #ff00ff; }
         .poster h3 { font-family: 'Press Start 2P', cursive; color: #0000ff; }
@@ -151,6 +155,7 @@
             border: 4px solid #222;
             box-shadow: inset 0 0 15px rgba(0,0,0,0.7), 5px 5px 15px rgba(0,0,0,0.5);
             position: relative;
+            z-index: 10; /* Ensure TV is behind chat window */
         }
         .tv-screen {
             background: #000;
@@ -167,6 +172,61 @@
             width: 100%;
             height: 100%;
             border: none;
+        }
+        .sponsor-ad {
+            border: 4px solid;
+            border-image: linear-gradient(to right, red, yellow, green, blue, indigo, violet) 1;
+            padding: 1.5rem;
+            text-align: center;
+            background: url('https://www.transparenttextures.com/patterns/stardust.png'), linear-gradient(to bottom right, #222, #555);
+            color: white;
+            font-family: 'Press Start 2P', cursive;
+            text-shadow: 2px 2px 4px #000;
+            position: relative;
+            z-index: 10;
+        }
+        .rainbow-text {
+            font-size: 1.5rem;
+            background: linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8, #dd00f3, #dd00f3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 1800% 1800%;
+            animation: rainbow 10s ease infinite, blink 1s step-end infinite;
+        }
+        @keyframes blink { 50% { opacity: 0.5; } }
+        .world-image-section {
+            padding: 1.5rem;
+            text-align: center;
+            color: white;
+            position: relative;
+            z-index: 10;
+        }
+        .world-image-section h2 {
+            font-family: 'Press Start 2P', cursive;
+            color: #ff00ff;
+            font-size: 1.5rem;
+            text-shadow: 2px 2px 4px #000;
+        }
+        .world-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .world-item img {
+            border-radius: 50%;
+            border: 4px solid #00ffff;
+            box-shadow: 0 0 20px #00ffff;
+        }
+        .world-item h3 {
+            font-family: 'Press Start 2P', cursive;
+            color: #00ffff;
+            margin-top: 1rem;
+        }
+        .world-item p {
+            font-size: 1.2rem;
+            max-width: 300px;
+            margin: 0.5rem auto 0;
         }
     </style>
 </head>
@@ -196,13 +256,16 @@
     </div>
 
     <div class="w-full max-w-lg mx-auto flex flex-col gap-4 p-2">
+        <!-- Responsive Spacer -->
+        <div class="h-32 md:hidden"></div>
+
         <!-- Event Logo -->
         <div id="event-logo-container" class="text-center">
             <img src="https://ccparty.kagekin.com/img/logo.png" alt="CRAZY CHAOS PARTY Logo" class="mx-auto max-w-sm w-full">
         </div>
 
         <!-- Main Chat UI -->
-        <div id="main-window" class="window rounded-lg shadow-2xl flex flex-col flex-shrink-0 h-[60vh] min-h-[400px]">
+        <div id="main-window" class="window rounded-lg shadow-2xl flex flex-col flex-shrink-0 max-h-[60vh] min-h-[400px] mb-16">
             <header class="title-bar rounded-t-md">
                 <div class="flex items-center"><h1 class="text-white text-sm md:text-base" style="font-family: 'Press Start 2P', cursive; text-shadow: 2px 2px #ff00ff;">CRAZY CHAOS PARTY!</h1></div>
                 <div class="title-bar-buttons"><span>_</span><span>☐</span><span class="bg-red-500">X</span></div>
@@ -217,7 +280,7 @@
             <img src="https://ccparty.kagekin.com/img/samune.png" alt="Poster Image" class="w-full mb-4 border-4 border-cyan-400">
             <p class="mb-4">YO! ユーたちわかってんのか？カオスといえばパーティ！ パーティといえばカオスだ！BIGなArtistとCrazyなPoisonPartyPeopleを集めて最高のパーティをブチあげるのさ！脳みそ沸騰するまで踊り続けろ！</p>
             <h3 class="text-xl mt-6 mb-2">🔥パーティアイテム & ソング大募集！🔥</h3>
-            <p>今回のパーティではみんなからパリピアイテムとパーティソングを募集して、全部ワールドにブチ込んで史上最強のカオス空間を作り上げるぜ〜！！ <strong>8/24まで！</strong></p>
+            <p>今回のパーティではみんなからパリピアイテムとパーティソングを募集して、全部ワールドにブチ込んで史上最強のカオス空間を作り上げるぜ〜！！ <strong>８月末まで！</strong></p>
             <h3 class="text-xl mt-6 mb-2">🎉驚愕のタイムテーブル！！🎉</h3>
             <ul class="list-disc list-inside space-y-1">
                 <li><strong>18:00</strong> イベント開始！「みんなでパーティ星に集合！」</li>
@@ -243,6 +306,35 @@
                 </a>
             </div>
         </div>
+        
+        <!-- Sponsor Ad Section -->
+        <div class="sponsor-ad flex-shrink-0">
+            <h2 class="rainbow-text mb-4">イマジナリースポンサー募集中！</h2>
+            <p class="mb-4 text-sm">ワタシスポンサーデキルアルって方はぜひイマジナリースポンサーとしてご応募ください。架空のスポンサーとして参加可能です。お金は一切かかりません。イマジナリースポンサーロゴで応募が可能です。</p>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLScWR-oVAVFQNoI30r8gzfXBRwdDb9kSuo6LdMYK_XKs_bCdlg/viewform" target="_blank" class="rainbow-button text-lg">スポンサーヌする！</a>
+        </div>
+
+        <!-- World Image Section -->
+        <div class="world-image-section flex-shrink-0">
+            <h2>ワールドイメージ</h2>
+            <div class="world-container">
+                <div class="world-item">
+                    <img src="https://placehold.co/200x200/ff00ff/000000?text=Party+Star" alt="パーティ星" class="mx-auto">
+                    <h3>🌟 パリピ星</h3>
+                    <p>パーティの冒険は、パリピ星人が住まう「パリピ星」から始まる！星やハート型の浮島が宇宙空間に浮かぶ幻想的な世界だ！</p>
+                </div>
+                <div class="world-item">
+                    <img src="https://placehold.co/200x200/00ffff/000000?text=Hype+Stage" alt="超アゲステージ" class="mx-auto">
+                    <h3>🎵 超絶アゲステージ</h3>
+                    <p>メイン会場となる「超アゲステージ」は、宇宙人の円盤が飛び交う巨大な円形ステージ！ネオンと光が狂乱の空間を演出する！</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="text-center py-8">
+            <img src="https://ccparty.kagekin.com/img/logo.png" alt="CRAZY CHAOS PARTY Logo" class="mx-auto h-12">
+        </footer>
 
     </div>
     
