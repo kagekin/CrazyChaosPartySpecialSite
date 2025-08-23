@@ -194,39 +194,51 @@
             animation: rainbow 10s ease infinite, blink 1s step-end infinite;
         }
         @keyframes blink { 50% { opacity: 0.5; } }
-        .world-image-section {
+        .content-section {
             padding: 1.5rem;
             text-align: center;
             color: white;
             position: relative;
             z-index: 10;
         }
-        .world-image-section h2 {
+        .content-section h2 {
             font-family: 'Press Start 2P', cursive;
             color: #ff00ff;
             font-size: 1.5rem;
             text-shadow: 2px 2px 4px #000;
         }
-        .world-container {
+        .people-container, .world-container {
+            margin-top: 2rem;
             display: flex;
             flex-direction: column;
-            gap: 2rem;
-            margin-top: 2rem;
+            gap: 4rem;
         }
-        .world-item img {
+        .person-item, .world-item {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        .person-item:nth-child(even), .world-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+        .person-image img, .world-item img {
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
             border: 4px solid #00ffff;
             box-shadow: 0 0 20px #00ffff;
         }
-        .world-item h3 {
+        .person-info, .world-item .info {
+            text-align: left;
+            flex: 1;
+        }
+        .person-info h3, .world-item h3 {
             font-family: 'Press Start 2P', cursive;
             color: #00ffff;
-            margin-top: 1rem;
         }
-        .world-item p {
-            font-size: 1.2rem;
-            max-width: 300px;
-            margin: 0.5rem auto 0;
+        .person-info p, .world-item p {
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
         }
     </style>
 </head>
@@ -234,8 +246,30 @@
     <div class="background-grid"></div>
     <div class="scanlines fixed inset-0"></div>
 
-    <!-- Event Info -->
-    <div id="event-info-container" class="fixed top-4 left-4 z-50">
+    <!-- Top Floating Elements Container -->
+    <div class="fixed top-0 left-0 right-0 z-50 md:hidden">
+        <div class="flex flex-col items-center pt-4">
+            <div id="event-info-container-mobile" class="mb-4">
+                <div id="event-info-box-mobile" class="window p-3 text-white text-sm">
+                    <h2 class="text-base text-cyan-300" style="font-family: 'Press Start 2P', cursive;">EVENT INFO</h2>
+                    <p class="mt-2">開催日: 2025/09/06 18:00 ~ 20:00 JST</p>
+                    <div id="countdown-mobile" class="mt-1 text-lg">
+                        <span>--d</span> <span>--h</span> <span>--m</span> <span>--s</span>
+                    </div>
+                </div>
+            </div>
+            <div id="ufo-container-mobile">
+                <a href="https://cluster.mu/e/5d360712-70ab-43b1-a0c0-badf7241ba9d" target="_blank" class="relative block">
+                    <div id="tractor-beam-mobile"></div>
+                    <div id="cow-emoji-mobile">🐮</div>
+                    <img src="https://ccparty.kagekin.com/img/ufo.png" alt="UFO" class="w-52 relative z-10">
+                    <div class="speech-bubble">イベントページはこちら！</div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="hidden md:block fixed top-4 left-4 z-50" id="event-info-container-desktop">
         <div id="event-info-box" class="window p-3 text-white text-sm">
             <h2 class="text-base text-cyan-300" style="font-family: 'Press Start 2P', cursive;">EVENT INFO</h2>
             <p class="mt-2">開催日: 2025/09/06 18:00 ~ 20:00 JST</p>
@@ -245,8 +279,7 @@
         </div>
     </div>
 
-    <!-- UFO -->
-    <div id="ufo-container" class="fixed top-8 right-4 z-50">
+    <div id="ufo-container" class="hidden md:block fixed top-8 right-4 z-50">
         <a href="https://cluster.mu/e/5d360712-70ab-43b1-a0c0-badf7241ba9d" target="_blank" class="relative block">
             <div id="tractor-beam"></div>
             <div id="cow-emoji">🐮</div>
@@ -255,17 +288,14 @@
         </a>
     </div>
 
-    <div class="w-full max-w-lg mx-auto flex flex-col gap-4 p-2">
-        <!-- Responsive Spacer -->
-        <div class="h-32 md:hidden"></div>
-
+    <div class="w-full max-w-lg mx-auto flex flex-col gap-4 p-2 pt-96 md:pt-2">
         <!-- Event Logo -->
         <div id="event-logo-container" class="text-center">
             <img src="https://ccparty.kagekin.com/img/logo.png" alt="CRAZY CHAOS PARTY Logo" class="mx-auto max-w-sm w-full">
         </div>
 
         <!-- Main Chat UI -->
-        <div id="main-window" class="window rounded-lg shadow-2xl flex flex-col flex-shrink-0 max-h-[60vh] min-h-[400px] mb-16">
+        <div id="main-window" class="window rounded-lg shadow-2xl flex flex-col flex-shrink-0 max-h-[60vh] min-h-[400px] mb-24">
             <header class="title-bar rounded-t-md">
                 <div class="flex items-center"><h1 class="text-white text-sm md:text-base" style="font-family: 'Press Start 2P', cursive; text-shadow: 2px 2px #ff00ff;">CRAZY CHAOS PARTY!</h1></div>
                 <div class="title-bar-buttons"><span>_</span><span>☐</span><span class="bg-red-500">X</span></div>
@@ -315,18 +345,88 @@
         </div>
 
         <!-- World Image Section -->
-        <div class="world-image-section flex-shrink-0">
+        <div class="content-section flex-shrink-0">
             <h2>ワールドイメージ</h2>
             <div class="world-container">
                 <div class="world-item">
-                    <img src="https://placehold.co/200x200/ff00ff/000000?text=Party+Star" alt="パーティ星" class="mx-auto">
+                    <img src="https://ccparty.kagekin.com/img/ppp.png" alt="パーティ星" class="mx-auto">
                     <h3>🌟 パリピ星</h3>
                     <p>パーティの冒険は、パリピ星人が住まう「パリピ星」から始まる！星やハート型の浮島が宇宙空間に浮かぶ幻想的な世界だ！</p>
                 </div>
                 <div class="world-item">
-                    <img src="https://placehold.co/200x200/00ffff/000000?text=Hype+Stage" alt="超アゲステージ" class="mx-auto">
-                    <h3>🎵 超絶アゲステージ</h3>
+                    <img src="https://ccparty.kagekin.com/img/hhs.png" alt="超アゲステージ" class="mx-auto">
+                    <h3>🎵 超アゲステージ</h3>
                     <p>メイン会場となる「超アゲステージ」は、宇宙人の円盤が飛び交う巨大な円形ステージ！ネオンと光が狂乱の空間を演出する！</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Party People Section -->
+        <div class="content-section flex-shrink-0">
+            <h2>パーティピーポー紹介！</h2>
+            <div class="people-container">
+                <div class="person-item">
+                    <div class="person-image flex-shrink-0">
+                        <a href="https://x.com/kgkn42" target="_blank"><img src="https://pbs.twimg.com/profile_images/1905651963158835200/M06q-esr_400x400.jpg" alt="カゲキン"></a>
+                    </div>
+                    <div class="person-info">
+                        <h3>カゲキン</h3>
+                        <p>言わずとしれたマッドバーチャリスト。どうやら今回のほとんど非合法なパーティを計画しているらしい。アテム警察に怒られたらどうするつもりなんだろう？</p>
+                    </div>
+                </div>
+                <div class="person-item">
+                    <div class="person-image flex-shrink-0">
+                        <a href="https://x.com/Galupeno" target="_blank"><img src="https://pbs.twimg.com/profile_images/1945566821555298305/XQIZRqxM_400x400.jpg" alt="AgeAgeガルペーニョ3枚盛り"></a>
+                    </div>
+                    <div class="person-info">
+                        <h3>AgeAgeガルペーニョ3枚盛り</h3>
+                        <p>「疲れたおっさんを走らせろ！」で有名なあのガルペーニョが参戦！今回は超アゲソングと伝説のムシカロイド「ミュリア」をこのパーティにつれてきてくれたぞ！ WOW！</p>
+                    </div>
+                </div>
+                <div class="person-item">
+                    <div class="person-image flex-shrink-0">
+                        <a href="https://x.com/afrop_afr" target="_blank"><img src="https://pbs.twimg.com/profile_images/1946945528576577536/DaM_fjFP_400x400.jpg" alt="アフロッティ"></a>
+                    </div>
+                    <div class="person-info">
+                        <h3>アフロッティ</h3>
+                        <p>惑星を飛び回るアフロニンジャ！ アフロがニンジャなのか！ ニンジャがアフロなのかはわからない！ しかし、一つ言えるのは、毛鞠を銀河の果てまでぶっ飛ばすのは選ばれし勇者にしかできないということだ！</p>
+                    </div>
+                </div>
+                <div class="person-item">
+                    <div class="person-image flex-shrink-0">
+                        <a href="https://x.com/893ajiema" target="_blank"><img src="https://pbs.twimg.com/profile_images/1816015062970290176/RW9CdFiS_400x400.jpg" alt="やくみエマ"></a>
+                    </div>
+                    <div class="person-info">
+                        <h3>やくみエマ</h3>
+                        <p>エスパーカンフーガールやくみエマのパーティガンを知らないやつはいるか？ いるなら今すぐに超アゲステージへGOだ！犬ボールが宙を飛び交うこのカオスの戦場に、やくみエマとともにあれ！！</p>
+                    </div>
+                </div>
+                <div class="person-item">
+                    <div class="person-image flex-shrink-0">
+                        <a href="https://cluster.mu/u/kazushiiiiii" target="_blank"><img src="https://i.imgur.com/DZIFHg5.png" alt="かずし"></a>
+                    </div>
+                    <div class="person-info">
+                        <h3>かずし</h3>
+                        <p>バーコードおさげにあなたもしませんか？ バーコードおさげにあなたもしませんか？パーティはバーコードおさげがお得です。</p>
+                    </div>
+                </div>
+                <div class="person-item">
+                    <div class="person-image flex-shrink-0">
+                        <a href="https://x.com/naoto_4179_" target="_blank"><img src="https://cluster-file-storage.imgix.net/files/group_0fde193ee67e5e42caba68e42e/1e59542b-4f5d-4136-96a3-ef07c973b084/c8ca05fa-8f54-4014-9ae9-3420029f61d4/square.jpg" alt="ナオト"></a>
+                    </div>
+                    <div class="person-info">
+                        <h3>ナオト</h3>
+                        <p>バーチャル世界でもっとも最高なバーチャルカメラマン！ ナオトさん！STUDIOMoVの代表として、今回の危険なパーティを激写してくれるらしい！ ポポポーン！！</p>
+                    </div>
+                </div>
+                <div class="person-item">
+                    <div class="person-image flex-shrink-0">
+                        <a href="https://x.com/PP_Panda4696" target="_blank"><img src="https://pbs.twimg.com/profile_images/1524435101446148096/Jg3mb-BH_400x400.jpg" alt="PPぱんだ"></a>
+                    </div>
+                    <div class="person-info">
+                        <h3>PPぱんだ</h3>
+                        <p>世界一Partyピーポーなぱんだ！ PPぱんださんが参戦！今回は素敵なパーティタスキを提供！「つけると なんだか 調子に乗った感じになるたすきです。」</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -399,6 +499,7 @@
         const openModalButton = document.getElementById('open-modal-button');
         const closeModalButton = document.getElementById('close-modal-button');
         const countdownElement = document.getElementById('countdown');
+        const countdownMobileElement = document.getElementById('countdown-mobile');
         const playerImage = document.getElementById('player-image');
         const trackNameElement = document.getElementById('track-name');
         const audioPlayer = document.getElementById('audio-player');
@@ -411,13 +512,17 @@
             const distance = partyDate - now;
             if (distance < 0) {
                 clearInterval(countdownInterval);
-                countdownElement.innerHTML = "PARTY TIME!"; return;
+                countdownElement.innerHTML = "PARTY TIME!"; 
+                if(countdownMobileElement) countdownMobileElement.innerHTML = "PARTY TIME!";
+                return;
             }
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            countdownElement.innerHTML = `<span>${days}d</span> <span>${hours}h</span> <span>${minutes}m</span> <span>${seconds}s</span>`;
+            const countdownHTML = `<span>${days}d</span> <span>${hours}h</span> <span>${minutes}m</span> <span>${seconds}s</span>`;
+            countdownElement.innerHTML = countdownHTML;
+            if(countdownMobileElement) countdownMobileElement.innerHTML = countdownHTML;
         }, 1000);
 
         // --- Music Player Logic ---
@@ -612,7 +717,7 @@
                 button.textContent = choice.text;
                 button.onclick = (event) => handleChoice(choice.next, event);
                 choicesContainer.appendChild(button);
-                gsap.from(button, { opacity: 0, x: -50, duration: 0.5, delay: index * 0.1, ease: 'power3.out' });
+                gsap.from(button, { opacity: 1, y: 20, duration: 0.5, delay: index * 0.1, ease: 'power3.out' });
             });
         }
         async function handleChoice(nextBranchKey, event) {
@@ -669,6 +774,7 @@
             gsap.to("#ufo-container", { y: -15, x: 20, rotation:-15, repeat: -1, yoyo: true, ease: "sine.inOut", duration: 3 });
             gsap.to("#cow-emoji", { y: -15, repeat: -1, yoyo: true, ease: "sine.inOut", duration: 1 });
             gsap.to("#tractor-beam", { opacity: 0.6, repeat: -1, yoyo: true, ease: "sine.inOut", duration: 1 });
+            gsap.to(".world-item img", { y: -10, repeat: -1, yoyo: true, ease: "sine.inOut", duration: 2, stagger: 0.5 });
             
             playbackId++;
             playCurrentScript(playbackId);
