@@ -246,10 +246,33 @@
     <div class="background-grid"></div>
     <div class="scanlines fixed inset-0"></div>
 
-    <!-- Top Floating Elements Container -->
-    <div class="fixed top-0 left-0 right-0 z-50 md:hidden">
-        <div class="flex flex-col items-center pt-4">
-            <div id="event-info-container-mobile" class="mb-4">
+    <!-- Top Floating Elements Container for Desktop -->
+    <div class="hidden md:block">
+        <div id="event-info-container-desktop" class="fixed top-4 left-4 z-50">
+            <div id="event-info-box" class="window p-3 text-white text-sm">
+                <h2 class="text-base text-cyan-300" style="font-family: 'Press Start 2P', cursive;">EVENT INFO</h2>
+                <p class="mt-2">開催日: 2025/09/06 18:00 ~ 20:00 JST</p>
+                <div id="countdown" class="mt-1 text-lg">
+                    <span>--d</span> <span>--h</span> <span>--m</span> <span>--s</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="ufo-container-desktop" class="fixed top-8 right-4 z-50">
+            <a href="https://cluster.mu/e/5d360712-70ab-43b1-a0c0-badf7241ba9d" target="_blank" class="relative block">
+                <div id="tractor-beam"></div>
+                <div id="cow-emoji">🐮</div>
+                <img src="https://ccparty.kagekin.com/img/ufo.png" alt="UFO" class="w-52 relative z-10">
+                <div class="speech-bubble">イベントページはこちら！</div>
+            </a>
+        </div>
+    </div>
+
+
+    <div class="w-full max-w-lg mx-auto flex flex-col gap-4 p-2">
+        <!-- Top Floating Elements for Mobile (in flow) -->
+        <div class="md:hidden flex flex-col items-center pt-4 space-y-8">
+            <div id="event-info-container-mobile">
                 <div id="event-info-box-mobile" class="window p-3 text-white text-sm">
                     <h2 class="text-base text-cyan-300" style="font-family: 'Press Start 2P', cursive;">EVENT INFO</h2>
                     <p class="mt-2">開催日: 2025/09/06 18:00 ~ 20:00 JST</p>
@@ -260,42 +283,19 @@
             </div>
             <div id="ufo-container-mobile">
                 <a href="https://cluster.mu/e/5d360712-70ab-43b1-a0c0-badf7241ba9d" target="_blank" class="relative block">
-                    <div id="tractor-beam-mobile"></div>
-                    <div id="cow-emoji-mobile">🐮</div>
                     <img src="https://ccparty.kagekin.com/img/ufo.png" alt="UFO" class="w-52 relative z-10">
                     <div class="speech-bubble">イベントページはこちら！</div>
                 </a>
             </div>
         </div>
-    </div>
 
-    <div class="hidden md:block fixed top-4 left-4 z-50" id="event-info-container-desktop">
-        <div id="event-info-box" class="window p-3 text-white text-sm">
-            <h2 class="text-base text-cyan-300" style="font-family: 'Press Start 2P', cursive;">EVENT INFO</h2>
-            <p class="mt-2">開催日: 2025/09/06 18:00 ~ 20:00 JST</p>
-            <div id="countdown" class="mt-1 text-lg">
-                <span>--d</span> <span>--h</span> <span>--m</span> <span>--s</span>
-            </div>
-        </div>
-    </div>
-
-    <div id="ufo-container" class="hidden md:block fixed top-8 right-4 z-50">
-        <a href="https://cluster.mu/e/5d360712-70ab-43b1-a0c0-badf7241ba9d" target="_blank" class="relative block">
-            <div id="tractor-beam"></div>
-            <div id="cow-emoji">🐮</div>
-            <img src="https://ccparty.kagekin.com/img/ufo.png" alt="UFO" class="w-52 relative z-10">
-            <div class="speech-bubble">イベントページはこちら！</div>
-        </a>
-    </div>
-
-    <div class="w-full max-w-lg mx-auto flex flex-col gap-4 p-2 pt-96 md:pt-2">
         <!-- Event Logo -->
         <div id="event-logo-container" class="text-center">
             <img src="https://ccparty.kagekin.com/img/logo.png" alt="CRAZY CHAOS PARTY Logo" class="mx-auto max-w-sm w-full">
         </div>
 
         <!-- Main Chat UI -->
-        <div id="main-window" class="window rounded-lg shadow-2xl flex flex-col flex-shrink-0 max-h-[60vh] min-h-[400px] mb-24">
+        <div id="main-window" class="window rounded-lg shadow-2xl flex flex-col flex-shrink-0 max-h-[60vh] min-h-[400px] mb-32">
             <header class="title-bar rounded-t-md">
                 <div class="flex items-center"><h1 class="text-white text-sm md:text-base" style="font-family: 'Press Start 2P', cursive; text-shadow: 2px 2px #ff00ff;">CRAZY CHAOS PARTY!</h1></div>
                 <div class="title-bar-buttons"><span>_</span><span>☐</span><span class="bg-red-500">X</span></div>
@@ -504,6 +504,7 @@
         const trackNameElement = document.getElementById('track-name');
         const audioPlayer = document.getElementById('audio-player');
         const bgmOffButton = document.getElementById('bgm-off-button');
+        const topFloatingElements = document.getElementById('top-floating-elements');
 
         // --- Countdown Timer ---
         const partyDate = new Date('2025-09-06T18:00:00+09:00').getTime();
@@ -717,12 +718,12 @@
                 button.textContent = choice.text;
                 button.onclick = (event) => handleChoice(choice.next, event);
                 choicesContainer.appendChild(button);
-                gsap.from(button, { opacity: 0, y: 20, duration: 0.5, delay: index * 0.1, ease: 'power3.out' });
+                gsap.fromTo(button, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, delay: index * 0.1, ease: 'power3.out' });
             });
         }
         async function handleChoice(nextBranchKey, event) {
             if (isScriptPlaying) return;
-            gsap.to('#choices', { opacity: 0, duration: 0.3, onComplete: () => { choicesContainer.innerHTML = ''; } });
+            gsap.to('#choices button', { opacity: 0, y: 20, duration: 0.3, stagger: 0.1, onComplete: () => { choicesContainer.innerHTML = ''; } });
             const userChoiceText = event.target.textContent;
             const userMessageWrapper = document.createElement('div');
             userMessageWrapper.className = 'flex items-start gap-3 justify-end';
@@ -776,6 +777,18 @@
             gsap.to("#tractor-beam", { opacity: 0.6, repeat: -1, yoyo: true, ease: "sine.inOut", duration: 1 });
             gsap.to(".world-item img", { y: -10, repeat: -1, yoyo: true, ease: "sine.inOut", duration: 2, stagger: 0.5 });
             
+            // Mobile scroll animation for top elements
+            if (window.innerWidth < 768) {
+                const topElements = document.querySelector('.fixed.top-0.md\\:hidden');
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 50) {
+                        gsap.to(topElements, { y: -300, opacity: 0, duration: 0.5, ease: 'power3.in' });
+                    } else {
+                        gsap.to(topElements, { y: 0, opacity: 1, duration: 0.5, ease: 'power3.out' });
+                    }
+                });
+            }
+
             playbackId++;
             playCurrentScript(playbackId);
         };
