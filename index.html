@@ -717,7 +717,7 @@
                 button.textContent = choice.text;
                 button.onclick = (event) => handleChoice(choice.next, event);
                 choicesContainer.appendChild(button);
-                gsap.from(button, { opacity: 1, y: 20, duration: 0.5, delay: index * 0.1, ease: 'power3.out' });
+                gsap.from(button, { opacity: 0, y: 20, duration: 0.5, delay: index * 0.1, ease: 'power3.out' });
             });
         }
         async function handleChoice(nextBranchKey, event) {
