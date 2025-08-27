@@ -207,38 +207,72 @@
             font-size: 1.5rem;
             text-shadow: 2px 2px 4px #000;
         }
-        .people-container, .world-container {
+        .people-container {
             margin-top: 2rem;
             display: flex;
             flex-direction: column;
             gap: 4rem;
         }
-        .person-item, .world-item {
+        .person-item {
             display: flex;
             gap: 1.5rem;
             align-items: center;
         }
-        .person-item:nth-child(even), .world-item:nth-child(even) {
+        .person-item:nth-child(even) {
             flex-direction: row-reverse;
         }
-        .person-image img, .world-item img {
+        .person-image img {
             width: 120px;
             height: 120px;
             border-radius: 50%;
             border: 4px solid #00ffff;
             box-shadow: 0 0 20px #00ffff;
         }
-        .person-info, .world-item .info {
+        .person-info {
             text-align: left;
             flex: 1;
         }
-        .person-info h3, .world-item h3 {
+        .person-info h3 {
             font-family: 'Press Start 2P', cursive;
             color: #00ffff;
         }
-        .person-info p, .world-item p {
+        .person-info p {
             font-size: 1.1rem;
             margin-top: 0.5rem;
+        }
+        .world-container {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+        }
+        .world-item {
+            background: #1a1a1a;
+            padding: 1.5rem;
+            border: 2px dashed #ff00ff;
+            text-align: center;
+        }
+        .world-item:nth-child(odd) { transform: rotate(-4deg); }
+        .world-item:nth-child(even) { transform: rotate(4deg); }
+        .world-item img {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 4px solid #00ffff;
+            box-shadow: 0 0 20px #00ffff;
+            margin: 0 auto;
+        }
+        .world-item h3 {
+            font-family: 'Press Start 2P', cursive;
+            color: #00ffff;
+            margin-top: 1rem;
+        }
+        .world-item p {
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
         }
     </style>
 </head>
@@ -769,26 +803,14 @@
             gsap.from("#event-logo-container", { opacity: 0, y: -30, duration: 1, ease: 'elastic.out(1, 0.5)', delay: 0.2 });
             gsap.from("#main-window", { opacity: 0, y: -50, duration: 1, ease: 'power3.out' });
             gsap.from(".poster", { opacity: 0, y: 50, rotation: 5, duration: 1, delay: 0.5, ease: 'power3.out' });
-            gsap.from("#ufo-container", { opacity: 0, x: 50, duration: 1, delay: 0.2, ease: 'power3.out' });
-            gsap.from("#event-info-container", { opacity: 0, x: -50, duration: 1, delay: 0.2, ease: 'power3.out' });
+            gsap.from("#ufo-container-desktop", { opacity: 0, x: 50, duration: 1, delay: 0.2, ease: 'power3.out' });
+            gsap.from("#event-info-container-desktop", { opacity: 0, x: -50, duration: 1, delay: 0.2, ease: 'power3.out' });
             gsap.from(".fixed.bottom-4", { opacity: 0, x: 50, duration: 1, delay: 0.7, ease: 'power3.out' });
-            gsap.to("#ufo-container", { y: -15, x: 20, rotation:-15, repeat: -1, yoyo: true, ease: "sine.inOut", duration: 3 });
+            gsap.to("#ufo-container-desktop", { y: -15, x: 20, rotation:-15, repeat: -1, yoyo: true, ease: "sine.inOut", duration: 3 });
             gsap.to("#cow-emoji", { y: -15, repeat: -1, yoyo: true, ease: "sine.inOut", duration: 1 });
             gsap.to("#tractor-beam", { opacity: 0.6, repeat: -1, yoyo: true, ease: "sine.inOut", duration: 1 });
-            gsap.to(".world-item img", { y: -10, repeat: -1, yoyo: true, ease: "sine.inOut", duration: 2, stagger: 0.5 });
+            gsap.to(".world-item", { y: -10, repeat: -1, yoyo: true, ease: "sine.inOut", duration: 3, stagger: 0.5 });
             
-            // Mobile scroll animation for top elements
-            if (window.innerWidth < 768) {
-                const topElements = document.querySelector('.fixed.top-0.md\\:hidden');
-                window.addEventListener('scroll', () => {
-                    if (window.scrollY > 50) {
-                        gsap.to(topElements, { y: -300, opacity: 0, duration: 0.5, ease: 'power3.in' });
-                    } else {
-                        gsap.to(topElements, { y: 0, opacity: 1, duration: 0.5, ease: 'power3.out' });
-                    }
-                });
-            }
-
             playbackId++;
             playCurrentScript(playbackId);
         };
