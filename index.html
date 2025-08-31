@@ -274,6 +274,36 @@
             margin-left: auto;
             margin-right: auto;
         }
+        .group:hover .glitch-base {
+            animation: shake 0.3s linear infinite;
+        }
+        .glitch-layer {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url('https://chaos-clustars.kagekin.com/ogp.png');
+            background-size: cover; background-position: center;
+            opacity: 0;
+        }
+        .group:hover .glitch-layer:nth-child(3) {
+            animation: glitch-fx 800ms infinite;
+            mix-blend-mode: hard-light;
+            opacity: 0.4;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+            20%, 40%, 60%, 80% { transform: translateX(2px); }
+        }
+        @keyframes glitch-fx {
+            0% { transform: translate(0); }
+            14% { transform: translate(2px, -3px); clip-path: inset(90% 0 1% 0); }
+            29% { transform: translate(-5px, 0px); clip-path: inset(10% 0 80% 0); }
+            43% { transform: translate(3px, 2px); clip-path: inset(50% 0 30% 0); }
+            57% { transform: translate(-2px, 4px); clip-path: inset(20% 0 5% 0); }
+            71% { transform: translate(5px, -3px); clip-path: inset(85% 0 10% 0); }
+            86% { transform: translate(-1px, 0px); clip-path: inset(40% 0 45% 0); }
+            100% { transform: translate(0); }
+        }
     </style>
 </head>
 <body class="bg-black flex items-center justify-center min-h-screen p-2">
@@ -521,7 +551,43 @@
                         <p>あしゃあしゃの素敵なアクセサリーがパーティワールドに置かれるの？ やったー！！！うれぴー！！！サンキューピーピー！！</p>
                     </div>
                 </div>
+                 <div class="person-item">
+                    <div class="person-image flex-shrink-0">
+                        <a href="https://cluster.mu/u/setsuya/avatars" target="_blank"><img src="https://cluster-file-storage.imgix.net/files/group_a2bba80572b8b1a796dd1e1773/d5b7614b-f0ae-464a-8a06-65bf9f72cc71/c5edeece-da71-4ef3-9544-820535ade419/square.png" alt="説也"></a>
+                    </div>
+                    <div class="person-info">
+                        <h3>説也</h3>
+                        <p>クレイジーでカオスなカエルを知ってるか？ その名もセツヤ！ しかも毒セツヤもいるらしい！ 最高のフロックでドープなクリエイターさ！ 今回は素敵なメリーゴーランドギミックと、アバターを提供！ カワイイアイテムでファンシーダンシングエボリューションだ！</p>
+                    </div>
+                </div>
+                 <div class="person-item">
+                    <div class="person-image flex-shrink-0">
+                        <a href="https://cluster.mu/u/cha_chako" target="_blank"><img src="https://cluster-file-storage.imgix.net/files/group_0a0662356d58ff8bf0cdd7497a/f9151503-3adc-43ec-9eb9-dcbaf3e5c794/5a791a41-8740-40c5-ba3b-bcecdb5e87ea/square.png" alt="ミューキー"></a>
+                    </div>
+                    <div class="person-info">
+                        <h3>ミューキー</h3>
+                        <p>素敵な金色のカエルをおくってくれたのはミューキーさん！さらに金色の猫「のせねこ（きん）」も提供いただいたぞ！これで金運アップ間違いなしだ！ゴールデンパリピかえたんピーポーにキミもなれるかな？</p>
+                    </div>
+                </div>
             </div>
+        </div>
+
+        <!-- CLUSTARS Link Section -->
+        <div class="content-section flex-shrink-0">
+             <h2 class="mb-4">CLUSTARS大集合まつりが貴方を待っている</h2>
+            <a href="https://chaos-clustars.kagekin.com/" target="_blank" class="block relative group overflow-hidden border-4 border-red-500 p-2 transition-transform duration-300 hover:scale-105">
+                <img src="https://chaos-clustars.kagekin.com/ogp.png" alt="CLUSTARS大集合まつりCHAOS" class="w-full block glitch-base">
+                <div class="absolute inset-0 bg-black/60 flex flex-col items-center justify-center text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                     <p class="text-red-500 text-xl md:text-2xl font-bold p-4" style="font-family: 'Press Start 2P', cursive; text-shadow: 2px 2px #000;">
+                        ⚠️ 警告 ⚠️
+                    </p>
+                     <p class="text-white text-base md:text-lg font-bold" style="font-family: 'Press Start 2P', cursive; text-shadow: 2px 2px #000;">
+                        このカオスに飛び込むのか？
+                    </p>
+                </div>
+                <div class="glitch-layer"></div>
+                <div class="glitch-layer"></div>
+            </a>
         </div>
 
         <!-- Footer -->
@@ -854,7 +920,7 @@
             gsap.to(modalContent, { opacity: 0, scale: 0.7, duration: 0.3, ease: 'power2.in', onComplete: () => profileModal.classList.add('hidden') });
         });
         function shareOnX() {
-            const text = encodeURIComponent("世界一カオスなパーティ…CrazyChaosPartyが始まる！ #cluster");
+            const text = encodeURIComponent("狂気のマッドバーチャリスト「カゲキン」が仕掛ける究極のパーティ… #CrazyChaosParty #cluster");
             const url = encodeURIComponent('https://ccparty.kagekin.com/');
             window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
         }
